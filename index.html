@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Press Start 2P";
+        }
+
+        body {
+            background-color: #00275c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px #21D4FD;
+            }
+            50% {
+                box-shadow: 0 0 20px #38F3FF;
+            }
+            100% {
+                box-shadow: 0 0 10px #21D4FD;
+            }
+        }
+
+        @keyframes neon-border {
+            0% {
+                border-color: #d4ff00;
+                box-shadow: 0 0 5px #e0fd21;
+            }
+            50% {
+                border-color: #ff3838;
+                box-shadow: 0 0 20px #ff3838;
+            }
+            100% {
+                border-color: #42fd21;
+                box-shadow: 0 0 5px #21fd33;
+            }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            background-color: #049ee1;
+            border: 10px solid #021f46;
+            border-radius: 36px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            animation: glow 2s infinite ease-in-out;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 5px solid #21D4FD;
+            border-radius: 20px;
+            animation: neon-border 2s infinite ease-in-out;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            background: #134B70;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background: #508C9B;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        button:active {
+            transform: scale(1);
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="backgroundmusiclobby.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="content">
+        <div class="logo">
+            <img src="logo.jpeg" alt="Game Logo">
+        </div>
+        <div class="buttons">
+            <button><a href="game.html">Play</a></button>
+            <button><a href="about.html">About</a></button>
+        </div>
+    </div>
+</body>
+</html>

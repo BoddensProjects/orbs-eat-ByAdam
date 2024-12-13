@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #201E43;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  
+  #loading-screen {
+    text-align: center;
+    color: #fff;
+  }
+  
+  .logo {
+    width: 150px; /* Adjust size as needed */
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  .game-name {
+    font-size: 2em;
+    animation: glow 1.5s infinite alternate;
+  }
+  
+  p {
+    font-size: 1.2em;
+    margin-top: 20px;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px #508C9B, 0 0 10px #508C9B, 0 0 15px #508C9B;
+    }
+    to {
+      text-shadow: 0 0 10px #134B70, 0 0 20px #134B70, 0 0 30px #134B70;
+    }
+  }
+  

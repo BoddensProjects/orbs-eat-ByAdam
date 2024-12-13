@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About the Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Press Start 2P", monospace;
+        }
+
+        body {
+            background-color: #00275c;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden; /* Prevent scrolling */
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            background-color: #049ee1;
+            border: 10px solid #021f46;
+            border-radius: 36px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            animation: slideIn 1.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            animation: glowText 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowText {
+            0% {
+                text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff;
+            }
+            100% {
+                text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+            }
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            animation: fadeInText 2s ease-in-out;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        button {
+            background: #134B70;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background: #508C9B;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        button:active {
+            transform: scale(1);
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .prize-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #021f46;
+            border-radius: 12px;
+            border: 5px solid #049ee1;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInPrize 2s ease-in-out;
+        }
+
+        @keyframes fadeInPrize {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .prize-section img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="backgroundmusiclobby.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="content">
+        <h1>About the Game</h1>
+        <p>This game was developed by Adam Boden for the 2024 Tech Fair at school. It's an exciting and interactive experience where players can use the spacebar to jump higher and the left/right arrow keys to move.</p>
+        <p>The goal is to collect orbs to score points before the timer runs out. A special green orb adds extra seconds to the timer. The game is a reflection of Adam's passion for programming.</p>
+        <p>During the Tech Fair, whoever achieves the highest score will win a prize. Good luck and have fun!</p>
+        <button><a href="index.html">Back to Home</a></button>
+    </div>
+
+    <div class="prize-section">
+        <h2>Prizes!</h2>
+        <p>The highest scorer during the Tech Fair will win an exciting prize! Take a look at the prize below:</p>
+        <img src="prize.png" alt="Prize Image">
+    </div>
+</body>
+</html>

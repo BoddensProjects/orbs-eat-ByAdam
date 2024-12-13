@@ -1,0 +1,903 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Web Game</title>
+    <style>
+
+*{
+    font-family: "Press Start 2P", system-ui;
+}
+
+
+
+#player {
+            width: 50px;
+            height: 50px;
+            background-color: #3498db; /* Color of the orb */
+            border-radius: 50%; /* Make it a perfect circle */
+            animation: glow 2s infinite; /* Animation to give the glow effect */
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #3498db, 0 0 20px rgba(52, 152, 235, 0.5); }
+            50% { box-shadow: 0 0 30px #3498db, 0 0 40px rgba(52, 152, 235, 0.7); }
+            100% { box-shadow: 0 0 50px #3498db, 0 0 60px rgba(52, 152, 235, 0.9); }
+        }
+
+
+/* Trail effect */
+.trail {
+    position: absolute;
+    width: 10px;  /* Initial width */
+    height: 20px;  /* Thickness */
+    background: rgba(255, 255, 255, 0.6);  /* White trail */
+    border-radius: 10px;
+    pointer-events: none;  /* No interaction with the trail */
+    transition: width 0.2s, opacity 1s;  /* Fade and expand the trail */
+}
+
+
+
+
+ /* Ensure the body does not scroll */
+/* Disable scrolling on the entire page */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Disable scroll */
+  height: 100vh; /* Ensure the body takes full height */
+  width: 100vw;  /* Ensure full width */
+}
+
+/* Video background settings */
+#background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Game container that holds all the game elements */
+#game-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden; /* Prevents the game from scrolling */
+}
+
+/* Content should appear on top of the video */
+.content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  padding: 20px;
+}
+
+
+
+
+
+
+
+        @keyframes bgAnimation {
+            0% { background-color: #201E43; }
+            100% { background-color: #134B70; }
+        }
+
+        #game-screen {
+            height: 100vh;
+            color: white;
+            position: relative;
+        }
+
+        #player {
+            width: 50px;
+            height: 50px;
+            background: #38b6ff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .target {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .red {
+    background: #ff3131;
+    animation: glowRed 1.5s ease-in-out infinite alternate;
+}
+
+.blue {
+    background: #004aad;
+    animation: glowBlue 1.5s ease-in-out infinite alternate;
+}
+
+.gold {
+    background: gold;
+    animation: glowGold 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowRed {
+    0% { box-shadow: 0 0 15px 5px red; }
+    50% { box-shadow: 0 0 25px 15px darkred; }
+    100% { box-shadow: 0 0 15px 5px red; }
+}
+
+@keyframes glowBlue {
+    0% { box-shadow: 0 0 15px 5px blue; }
+    50% { box-shadow: 0 0 25px 15px darkblue; }
+    100% { box-shadow: 0 0 15px 5px blue; }
+}
+
+@keyframes glowGold {
+    0% { box-shadow: 0 0 15px 5px gold; }
+    50% { box-shadow: 0 0 25px 15px darkgoldenrod; }
+    100% { box-shadow: 0 0 15px 5px gold; }
+}
+
+/*
+        
+        #timer {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        
+        #progress-bar-container {
+            width: 200px; 
+            height: 30px;
+            background-color: #333;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #progress-bar {
+            height: 100%;
+            background-color: rgb(75, 255, 75);
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out; 
+
+        }
+            
+        */
+
+        #timer {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    color: white; /* Text color to contrast the bar */
+}
+
+#progress-bar-container {
+    z-index: 7;
+    width: 200px; 
+    height: 30px;
+    background: linear-gradient(135deg, #3a3a3a, #222); /* Dark gradient for the background */
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7); /* Added depth to the container */
+    padding: 3px; /* Added padding for a more contained feel */
+}
+
+#progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #75FF75, #34B634); /* Green gradient for progress bar */
+    border-radius: 15px; /* Rounded corners for smooth look */
+    transition: width 0.5s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.6); /* Subtle glow effect on the progress bar */
+}
+
+#progress-bar-container:hover {
+    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.6); /* Glow on hover */
+}
+
+#progress-bar {
+    transition: width 0.5s ease-in-out, box-shadow 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+        .green {
+    background: #00ff29;
+}
+
+
+        /* Score Bar Styles 
+        #score-bar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 300px;
+            height: 40px;
+            background: linear-gradient(90deg, #508C9B, #134B70);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            animation: pulseEffect 1s infinite alternate;
+        }
+
+        #score-bar span {
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: scoreAnimation 1s ease-in-out;
+        }
+
+        @keyframes pulseEffect {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(255, 255, 0, 0.8); }
+        }
+
+        @keyframes scoreAnimation {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.2); opacity: 1; }
+        } */
+
+        /* Game Over Modal */
+       /*  #game-over-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #game-over-content {
+            background: #201E43;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        #game-over-content button {
+            background: #134B70;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #game-over-content button:hover {
+            background: #508C9B;
+        }*/
+
+
+        #score-bar {
+            z-index: 7;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 700px;
+    height: 50px; /* Increased height for a sleeker look */
+    background: linear-gradient(145deg, #508C9B, #134B70); /* Diagonal gradient for more depth */
+    border-radius: 20px; /* Smooth corners */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    transition: transform 0.3s ease-in-out;
+}
+
+#score-bar:hover {
+    transform: scale(1.05); /* Slight zoom effect when hovered */
+    box-shadow: 0 8px 16px rgba(0, 255, 255, 0.6); /* Glow on hover */
+}
+
+#score-bar span {
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3); /* Subtle glow */
+    letter-spacing: 2px;
+    transition: opacity 0.3s ease;
+    
+}
+
+@keyframes pulseEffect {
+    0% { 
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.5); 
+    }
+    100% { 
+        box-shadow: 0 0 25px rgba(255, 255, 0, 0.8), 0 0 30px rgba(0, 255, 255, 0.5); 
+    }
+}
+
+
+
+
+
+
+
+
+
+        #game-over-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+}
+
+#game-over-content {
+    background: #201E43;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+    color: white;
+    font-size: 1.5rem;
+    animation: popUp 0.5s ease-in-out; /* Pop-up effect */
+}
+
+@keyframes popUp {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#game-over-content button {
+    background: #134B70;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth scaling and shadow change */
+}
+
+#game-over-content button:hover {
+    background: #508C9B;
+    transform: scale(1.1); /* Button grows slightly on hover */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); /* Glowing effect */
+}
+
+#game-over-content button:active {
+    transform: scale(1); /* Button returns to normal when clicked */
+}
+
+
+
+
+
+
+
+
+
+        .pink {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: pink;
+    box-shadow: 0 0 15px 5px pink;
+    animation: rainbowGlow 3s infinite, glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes rainbowGlow {
+    0% { background: rgb(220, 61, 186); }
+    20% { background: red; }
+    40% { background: orange; }
+    60% { background: yellow; }
+    80% { background: green; }
+    100% { background: blue; }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 15px 5px pink;
+    }
+    50% {
+        box-shadow: 0 0 25px 15px yellow;
+    }
+    100% {
+        box-shadow: 0 0 15px 5px pink;
+    }
+}
+
+
+#test{
+    height: 10vh;
+    width: 100%;
+    background-color: aqua;
+    border-radius: 10px;
+    z-index: 6;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="background-video">
+        <source src="backgroundVideo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      
+      <div class="content">
+        <!-- Your other content here -->
+        <div id="game-screen">
+            <div id="test">
+            <div id="score-bar">
+                <span id="score">Score: 0</span>
+            </div>
+            <div id="timer">
+                <div id="progress-bar-container">
+                    <div id="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+            <div id="player"></div>
+        </div>
+        
+        <!-- Game Over Modal -->
+        <div id="game-over-modal">
+            <div id="game-over-content">
+                <h2>Game Over!</h2>
+                <p>You collected <span id="final-score"></span> dots.</p>
+                <button onclick="restartGame()">RESTART</button>
+                <button><a href="index.html">HOME</a></button>
+            </div>
+        </div>
+      </div>
+
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const gameScreen = document.getElementById('game-screen');
+    const scoreDisplay = document.getElementById('score');
+    const player = document.getElementById('player');
+    const progressBar = document.getElementById('progress-bar');
+    const gameOverModal = document.getElementById('game-over-modal');
+    const finalScore = document.getElementById('final-score');
+
+    let score = 0;
+    let collectedDots = 0;
+    let gameInterval;
+    let spawnRate = 1500;
+    let playerX = window.innerWidth / 2;
+    let playerY = window.innerHeight / 2;
+    let velocityX = 0;
+    let velocityY = 0;
+    let gravity = 1.5;
+    let jumpHeight = 10;
+    let playerMovementInterval; // Interval variable for player movement
+
+    // Sounds
+    const backgroundMusic = new Audio('backgroundMusic.mp3');
+    const crashSound = new Audio('crash.mp3');
+    const redSound = new Audio('redCrash.mp3');
+    const blueSound = new Audio('blueCrash.mp3');
+    const goldSound = new Audio('goldCrash.mp3');
+    const greenSound = new Audio('greenSound1.mp3');
+    const pinkSound = new Audio('pinkCrash.mp3');
+
+    // Start background music
+    function playBackgroundMusic() {
+        backgroundMusic.loop = true;
+        backgroundMusic.play();
+      spawnRate = 1500;
+    }
+
+    playBackgroundMusic();  // Play music as soon as the game starts
+
+    const keys = {
+        ArrowLeft: false,
+        ArrowRight: false,
+        Space: false
+    };
+
+    window.addEventListener('keydown', (e) => {
+        if (keys.hasOwnProperty(e.code)) keys[e.code] = true;
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (keys.hasOwnProperty(e.code)) keys[e.code] = false;
+    });
+
+    // Timer
+    let timeLeft = 30; // 30 seconds countdown
+    let timerInterval;
+
+    function startGame() {
+        score = 0;
+        collectedDots = 0;
+        timeLeft = 30;
+        scoreDisplay.textContent = `Score: ${score}`;
+        spawnRate = 1500;
+        // Timer countdown
+        timerInterval = setInterval(() => {
+            timeLeft--;
+
+            // Update progress bar
+            updateProgressBar(timeLeft);
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                gameOver();
+            }
+        }, 1000);
+
+        // Game interval
+        gameInterval = setInterval(() => {
+            spawnTarget();
+            adjustDifficulty();
+        }, spawnRate);
+
+        // Reset player movement interval
+        if (playerMovementInterval) {
+            clearInterval(playerMovementInterval);
+        }
+        updatePlayer();
+    }
+
+    function updateProgressBar(time) {
+        // Update progress bar width based on the time left
+        const percentage = time / 30; // Assuming 30 seconds as the initial time limit
+        progressBar.style.width = `${percentage * 100}%`;
+
+        // Change color based on the time left
+        if (percentage > 0.66) {
+            progressBar.style.backgroundColor = 'green';
+        } else if (percentage > 0.33) {
+            progressBar.style.backgroundColor = 'yellow';
+        } else {
+            progressBar.style.backgroundColor = 'red';
+        }
+    }
+
+    function adjustDifficulty() {
+        if (score % 10 === 0 && spawnRate > 500) {
+            spawnRate -= 100;
+            clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                spawnTarget();
+                adjustDifficulty();
+            }, spawnRate);
+        }
+    }
+
+    function spawnTarget() {
+    const target = document.createElement('div');
+    target.classList.add('target');
+
+    const random = Math.random();
+    if (random < 0.4) { // Adjust the range to make pink appear more or less
+        target.classList.add('red');
+        target.dataset.points = 5;
+    } else if (random < 0.75) {
+        target.classList.add('blue');
+        target.dataset.points = 10;
+    } else if (random < 0.95) {
+        target.classList.add('gold');
+        target.dataset.points = 20;
+    } else if (random < 0.98) {
+        target.classList.add('green');
+        target.dataset.points = 20;
+    } else {
+        target.classList.add('pink'); // New pink target
+        target.dataset.points = 45; // Pink target worth 4 points
+    }
+
+    target.style.top = `${Math.random() * 90}vh`;
+    target.style.left = `${Math.random() * 90}vw`;
+    gameScreen.appendChild(target);
+}
+
+
+
+    function updatePlayer() {
+        playerMovementInterval = setInterval(() => {
+            if (keys.ArrowLeft) velocityX = -15;
+            else if (keys.ArrowRight) velocityX = 15;
+            else velocityX = 0;
+
+            if (keys.Space) {
+                velocityY = -jumpHeight;
+            }
+
+            velocityY += gravity;
+
+            playerX += velocityX;
+            playerY += velocityY;
+
+            if (playerY >= window.innerHeight - 50) {
+                playerY = window.innerHeight - 50;
+                velocityY = 0;
+            }
+
+            player.style.left = `${Math.max(0, Math.min(playerX, window.innerWidth - 50))}px`;
+            player.style.top = `${playerY}px`;
+
+            checkCollisions();
+        }, 1000 / 60); // 60 FPS
+    }
+
+    function checkCollisions() {
+        const targets = document.querySelectorAll('.target');
+        targets.forEach(target => {
+            if (isCollision(player, target)) {
+                handleCollision(target);
+            }
+        });
+    }
+
+    function isCollision(player, target) {
+        const playerRect = player.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        return !(playerRect.right < targetRect.left || playerRect.left > targetRect.right || playerRect.bottom < targetRect.top || playerRect.top > targetRect.bottom);
+    }
+
+    function handleCollision(target) {
+    const points = parseInt(target.dataset.points);
+    score += points;
+    scoreDisplay.textContent = `Score: ${score}`;
+    collectedDots++;
+
+    if (target.classList.contains('red')) {
+        redSound.play();
+    } else if (target.classList.contains('blue')) {
+        blueSound.play();
+    } else if (target.classList.contains('gold')) {
+        goldSound.play();
+    } else if (target.classList.contains('green')) {
+        greenSound.play();
+        
+        // Add 2 seconds to the timer when the green orb is collected
+        timeLeft += 2;
+        // Update the progress bar immediately with the new time
+        updateProgressBar(timeLeft);
+        
+    } else if (target.classList.contains('pink')) { // Pink target logic
+        pinkSound.play();
+    }
+
+    target.remove();
+}
+
+    function gameOver() {
+        finalScore.textContent = score;
+        gameOverModal.style.display = 'flex';
+    }
+
+    function restartGame() {
+    // Remove all existing targets from the previous game
+    const targets = document.querySelectorAll('.target');
+    targets.forEach(target => target.remove());
+
+    // Reset spawn rate to its original value
+    spawnRate = 1500;
+
+    // Hide the game over modal
+    gameOverModal.style.display = 'none';
+
+    // Stop any existing game intervals
+    clearInterval(gameInterval);
+    clearInterval(timerInterval);
+    clearInterval(playerMovementInterval);
+
+    // Reset player position
+    playerX = window.innerWidth / 2;
+    playerY = window.innerHeight / 2;
+    velocityX = 0;
+    velocityY = 0;
+    player.style.left = `${playerX}px`;
+    player.style.top = `${playerY}px`;
+
+    // Restart the background music
+    playBackgroundMusic();
+
+    // Start the game again
+    startGame();
+}
+
+
+
+
+// Disable scrolling temporarily when the game is in action
+window.addEventListener('keydown', function(e) {
+  // Prevent default scrolling actions for arrow keys, spacebar, etc.
+  if (e.key === " " || e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    e.preventDefault(); // Prevent the page from scrolling
+  }
+});
+
+// Optional: Re-enable scrolling if needed after game is done
+window.addEventListener('keyup', function(e) {
+  // If necessary, re-enable scrolling for other interactions
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Player's initial position and physics variables
+let playerXx = window.innerWidth / 2;  // Center the player horizontally
+let playerYy = window.innerHeight / 2;  // Center the player vertically
+let velocityYy = 0;  // Y-axis velocity (gravity effect)
+let gravityy = 1.5;  // Gravity strength
+let moveSpeed = 10;  // Movement speed (left-right)
+
+// To create the trail effect behind the player
+function createTrail(x, y) {
+    const trail = document.createElement('div');
+    trail.classList.add('trail');
+    document.body.appendChild(trail);
+
+    // Position the trail behind the player
+    trail.style.left = `${x - trail.offsetWidth / 2}px`;
+    trail.style.top = `${y - trail.offsetHeight / 2}px`;
+
+    // Fade-out and expand the trail
+    setTimeout(() => {
+        trail.style.opacity = 0;
+        trail.style.width = '200px';  // Make the trail longer
+    }, 10);
+
+    // Remove the trail after animation
+    setTimeout(() => {
+        trail.remove();
+    }, 1000);
+}
+
+// Handle keyboard inputs (left-right and jump)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+        playerXx += moveSpeed;  // Move right
+    } else if (e.key === 'ArrowLeft') {
+        playerXx -= moveSpeed;  // Move left
+    } else if (e.key === ' ' || e.key === 'ArrowUp') {
+        if (playerYy === window.innerHeight / 2) {  // Jump only when on the ground
+            velocityYy = -15;  // Jumping velocity
+        }
+    }
+
+    // Create the trail at the new position
+    createTrail(playerX, playerY);
+});
+
+// Main game loop to simulate gravity and update player position
+function gameLoop() {
+    // Apply gravity to the player
+    velocityYy += gravityy;  // Increase falling speed
+    playerYy += velocityYy;  // Update player's vertical position
+
+    // Prevent player from falling off screen
+    if (playerYy >= window.innerHeight / 2) {
+        playerYy = window.innerHeight / 2;  // Keep player on the ground
+        velocityYy = 0;  // Stop falling when on the ground
+    }
+
+    // Update player position on the screen
+    const player = document.getElementById('player');
+    player.style.left = `${playerX - player.offsetWidth / 2}px`;
+    player.style.top = `${playerY - player.offsetHeight / 2}px`;
+
+    requestAnimationFrame(gameLoop);  // Repeat the loop
+}
+
+// Initialize the game loop
+gameLoop();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    startGame(); // Start the game initially
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
